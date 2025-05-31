@@ -1,0 +1,10 @@
+@TransportationSystem_HostAddress = https://localhost:7032
+
+GET {{TransportationSystem_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{TransportationSystem_HostAddress}}/api/bustype
+
+###
