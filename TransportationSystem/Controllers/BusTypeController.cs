@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TransportationSystem.Data;
 using TransportationSystem.Models;
+using TransportationSystem.DTOs.BusTypeDTO;
+using AutoMapper;
+
 
 namespace TransportationSystem.Controllers
 {
@@ -12,72 +14,60 @@ namespace TransportationSystem.Controllers
     {
 
         private readonly ApplicationDbContext _context;
-        public BusTypeController(ApplicationDbContext context)
+        private readonly IMapper _mapper;
+        public BusTypeController(ApplicationDbContext context ,IMapper mapper)
         {
             _context = context;
+            _mapper=mapper;
         }
-        //[HttpGet]
-        //public async Task<ActionResult<List<BusType>>> GetAll()
-        //{
-        //    var items = new List<BusType> 
-        //    {
-        //        new BusType
-        //        {
-        //            Id = 1,
-        //            Name = "City Bus"
-        //        }
-        //    };
-        //    return Ok(items);
-        //}
-
+        
 
         // GET: api/BusType == get all
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var items = await _context.BusTypes.ToListAsync();
-            return Ok(items);
+            var result = _mapper.Map<List<BusTypeDto>>(items);
+            return Ok(result);
         }
         // GET: by id == get by id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var item = await _context.BusTypes.FindAsync(id);
-            if (item == null)
+            var result = _mapper.Map<BusTypeDto>(item);
+            if (result == null)
             {
                 return NotFound();
             }
-            return Ok(item);
+            return Ok(result);
         }
         // POST: api/BusType == create
         [HttpPost]
-        public async Task<IActionResult> Add_Bus(BusType busType)
+        public async Task<IActionResult> Add_BusType(BusTypeCreateDto busType)
         {
             if (busType == null)
-            {
-                return BadRequest("BusType cannot be null.");
-            }
-            _context.BusTypes.Add(busType);
+                return BadRequest("Invalid data");
+            var newBusType = _mapper.Map<BusType>(busType);
+            _context.BusTypes.Add(newBusType);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = busType.Id }, busType);
+            return CreatedAtAction(nameof(GetById), new { id = newBusType.Id }, newBusType);
         }
         // PUT: api/BusType/{id} == update  
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update_Bus(int id, BusType busType)
-        {
-            if (id != busType.Id)
-            {
-                return BadRequest("BusType ID don`t match.");
-            }
-            var existingBus = await _context.BusTypes.FindAsync(id);
-            if (existingBus == null)
+        public async Task<IActionResult> Update_Bus(int id, BusTypeUpdateDto busType)
+        {var existingBusType = await _context.BusTypes.FindAsync(id);
+
+            if (existingBusType == null)
             {
                 return NotFound();
             }
-            existingBus.Name = busType.Name;
-            existingBus.Description = busType.Description;
-            _context.Entry(existingBus).State = EntityState.Modified;
+
+            existingBusType.Name = busType.Name;
+            existingBusType.Description = busType.Description;
+            existingBusType.Category = busType.Category;
+            _context.Entry(existingBusType).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return Ok(await _context.BusTypes.FindAsync(id));
         }
@@ -106,6 +96,7 @@ namespace TransportationSystem.Controllers
             }
             var items = await _context.BusTypes
                 .Where(b => EF.Functions.Like(b.Name, $"%{name}%"))
+                
                 .ToListAsync();
             if (items.Count == 0)
             {

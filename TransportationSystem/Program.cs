@@ -1,4 +1,6 @@
-using TransportationSystem.Data; 
+using TransportationSystem.Data;
+using TransportationSystem.Profiles;
+using AutoMapper;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -11,12 +13,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Configure AutoMapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+//builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
-//configure database context
+// Configure database context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-
 
 var app = builder.Build();
 
@@ -28,7 +31,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TransportationSystem v1"));
 }
 app.UseHttpsRedirection();
-
 
 app.UseAuthorization();
 
