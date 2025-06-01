@@ -27,35 +27,56 @@ namespace TransportationSystem.Data
             modelBuilder.Entity<BusType>()
                 .HasMany(bt => bt.Buses)
                 .WithOne(b => b.BusType)
-                .HasForeignKey(b => b.BusTypeId);
+                .HasForeignKey(b => b.BusTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
             // Configuring BusRoute
             modelBuilder.Entity<BusRoute>()
                 .HasMany(br => br.Buses)
                 .WithOne(b => b.BusRoute)
-                .HasForeignKey(b => b.BusRouteId);
+                .HasForeignKey(b => b.BusRouteId)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<BusRoute>()
                 .HasMany(br => br.Stops)
                 .WithOne(bs => bs.BusRoute)
-                .HasForeignKey(bs => bs.BusRouteId);
+                .HasForeignKey(bs => bs.BusRouteId)
+                .OnDelete(DeleteBehavior.Restrict);
             // Configuring Bus
             modelBuilder.Entity<Bus>()
                 .HasOne(b => b.Driver)
                 .WithMany(e => e.AssignedBuses)
-                .HasForeignKey(b => b.DriverId);
+                .HasForeignKey(b => b.DriverId)
+                .OnDelete(DeleteBehavior.Restrict);
             // Configuring Booking
             modelBuilder.Entity<Booking>()
                 .HasOne(bk => bk.Student)
                 .WithMany(s => s.Bookings)
-                .HasForeignKey(bk => bk.StudentId);
+                .HasForeignKey(bk => bk.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Booking>()
                 .HasOne(bk => bk.Bus)
                 .WithMany(b => b.Bookings)
-                .HasForeignKey(bk => bk.BusId);
+                .HasForeignKey(bk => bk.BusId)
+                .OnDelete(DeleteBehavior.Restrict);
             // Configuring Payment
             modelBuilder.Entity<Payment>()
                 .HasOne(p => p.Student)
                 .WithMany(s => s.Payments)
-                .HasForeignKey(p => p.StudentId);
+                .HasForeignKey(p => p.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            // Configuring Student
+            modelBuilder.Entity<Student>()
+                .HasMany(s => s.Bookings)
+                .WithOne(bk => bk.Student)
+                .HasForeignKey(bk => bk.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            // Configuring bus stop
+            modelBuilder.Entity<BusStop>()
+                .HasOne(bs => bs.BusRoute)
+                .WithMany(br => br.Stops)
+                .HasForeignKey(bs => bs.BusRouteId)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
 
     }
