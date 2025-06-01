@@ -1,6 +1,6 @@
-﻿namespace TransportationSystem.Models
+﻿namespace TransportationSystem.DTOs.BusRouteDTO
 {
-    public class BusRoute
+    public class BusRouteDto
     {
         public int Id { get; set; }
         public string RouteName { get; set; } 
@@ -8,12 +8,6 @@
         public string EndPoint { get; set; } 
         public string Schedule { get; set; }
         
-      
-      public ICollection<Bus> Buses { get; set; } = new List<Bus>();
-        public ICollection<BusStop> Stops { get; set; } = new List<BusStop>();
-
-
-
-
+        
     }
 }

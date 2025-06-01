@@ -18,8 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Mappings\" />
-	  
+    <Folder Include="Repository\" />
   </ItemGroup>
 
 </Project>
