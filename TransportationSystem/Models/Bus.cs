@@ -7,6 +7,7 @@
         public int BusNumber { get; set; }
         public string BusPlate { get; set; } 
         public int Capacity { get; set; }
+        public bool IsCapacityFull { get; set; } = false;
 
         // Foreign keys and navigation properties
         public int BusTypeId { get; set; }  
