@@ -48,6 +48,7 @@ namespace TransportationSystem.Controllers
         {
             if (busType == null)
                 return BadRequest("Invalid data");
+
             var newBusType = _mapper.Map<BusType>(busType);
             _context.BusTypes.Add(newBusType);
             await _context.SaveChangesAsync();

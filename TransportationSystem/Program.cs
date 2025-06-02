@@ -15,7 +15,7 @@ builder.Services.AddSwaggerGen();
 
 // Configure AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-//builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
 
 // Configure database context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

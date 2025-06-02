@@ -10,7 +10,7 @@ namespace TransportationSystem.Profiles
     {
         public BusRouteProfile()
         {
-            CreateMap<BusRoute, BusTypeDto>();
+            CreateMap<BusRoute, BusRouteDto>();
             CreateMap<BusRouteCreateDto, BusRoute>();
             CreateMap<BusRouteUpdateDto, BusRoute>();
         }
