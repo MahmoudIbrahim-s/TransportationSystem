@@ -12,8 +12,5 @@
       public ICollection<Bus> Buses { get; set; } = new List<Bus>();
         public ICollection<BusStop> Stops { get; set; } = new List<BusStop>();
 
-
-
-
     }
 }

@@ -74,8 +74,9 @@ namespace TransportationSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BusNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("BusName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BusPlate")
                         .IsRequired()
@@ -95,9 +96,6 @@ namespace TransportationSystem.Migrations
 
                     b.Property<bool>("IsCapacityFull")
                         .HasColumnType("bit");
-
-                    b.Property<int>("uniqueId")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
